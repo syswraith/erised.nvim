@@ -50,11 +50,27 @@ local function draw_minintro(buf, logo_width, logo_height)
 end
 
 local function set_options()
+    local saved = {
+        number = vim.opt_local.number:get(),
+        relativenumber = vim.opt_local.relativenumber:get(),
+        list = vim.opt_local.list:get(),
+        fillchars = vim.opt_local.fillchars:get(),
+        colorcolumn = vim.opt_local.colorcolumn:get(),
+    }
     vim.opt_local.number = false            -- disable line numbers
     vim.opt_local.relativenumber = false    -- disable relative line numbers
     vim.opt_local.list = false              -- disable displaying whitespace
     vim.opt_local.fillchars = { eob = ' ' } -- do not display "~" on each new line
     vim.opt_local.colorcolumn = "0"         -- disable colorcolumn
+    return saved
+end
+
+local function restore_options(saved)
+    vim.opt_local.number = saved.number
+    vim.opt_local.relativenumber = saved.relativenumber
+    vim.opt_local.list = saved.list
+    vim.opt_local.fillchars = saved.fillchars
+    vim.opt_local.colorcolumn = saved.colorcolumn
 end
 
 local function redraw()
@@ -75,7 +91,7 @@ local function display_minintro(payload)
     end
 
     minintro_buff = default_buff
-    set_options()
+    local saved_options = set_options()
     draw_minintro(minintro_buff, INTRO_LOGO_WIDTH, INTRO_LOGO_HEIGHT)
 
     vim.api.nvim_create_autocmd({ "WinResized", "VimResized" }, {
@@ -84,14 +100,15 @@ local function display_minintro(payload)
         callback = redraw,
     })
 
-    -- as soon as you start typing, the logo goes away and you're just
-    -- editing the buffer like normal
+    -- as soon as you start typing, the logo goes away, options are
+    -- restored, and you're just editing the buffer like normal
     vim.api.nvim_create_autocmd("InsertEnter", {
         group = autocmd_group,
         buffer = minintro_buff,
         once = true,
         callback = function()
             vim.api.nvim_buf_clear_namespace(minintro_buff, highlight_ns_id, 0, -1)
+            restore_options(saved_options)
         end,
     })
 end
@@ -111,4 +128,3 @@ end
 return {
     setup = setup,
 }
-
