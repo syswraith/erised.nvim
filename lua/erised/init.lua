@@ -1,15 +1,3 @@
--- local erised_opened = false
-
-local intro_logo = {
-    "   .▄▄ ·  ▄· ▄▌.▄▄ · ▄▄▌ ▐ ▄▌▄▄▄   ▄▄▄· ▪  ▄▄▄▄▄ ▄ .▄",
-    "   ▐█ ▀. ▐█▪██▌▐█ ▀. ██· █▌▐█▀▄ █·▐█ ▀█ ██ •██  ██▪▐█",
-    "   ▄▀▀▀█▄▐█▌▐█▪▄▀▀▀█▄██▪▐█▐▐▌▐▀▀▄ ▄█▀▀█ ▐█· ▐█.▪██▀▐█",
-    "   ▐█▄▪▐█ ▐█▀·.▐█▄▪▐█▐█▌██▐█▌▐█•█▌▐█ ▪▐▌▐█▌ ▐█▌·██▌▐▀",
-    "    ▀▀▀▀   ▀ •  ▀▀▀▀  ▀▀▀▀ ▀▪.▀  ▀ ▀  ▀ ▀▀▀ ▀▀▀ ▀▀▀ ·",
-    "            Magic blooms only in rare souls          "
-}
-
-
 local intro_logo = {
     "   .▄▄ ·  ▄· ▄▌.▄▄ · ▄▄▌ ▐ ▄▌▄▄▄   ▄▄▄· ▪  ▄▄▄▄▄ ▄ .▄",
     "   ▐█ ▀. ▐█▪██▌▐█ ▀. ██· █▌▐█▀▄ █·▐█ ▀█ ██ •██  ██▪▐█",
@@ -110,6 +98,7 @@ end
 
 local function setup(options)
     options = options or {}
+    vim.opt.shortmess:append("I") -- suppress the built-in :intro message
     vim.api.nvim_set_hl(highlight_ns_id, "Default", { fg = options.color or DEFAULT_COLOR })
     vim.api.nvim_set_hl_ns(highlight_ns_id)
     vim.api.nvim_create_autocmd("VimEnter", {
@@ -122,3 +111,4 @@ end
 return {
     setup = setup,
 }
+
