@@ -7,7 +7,7 @@ local intro_logo = {
     "            Magic blooms only in rare souls          "
 }
 local PLUGIN_NAME = "erised"
-local DEFAULT_COLOR = "#cc241d"
+local DEFAULT_COLOR = "#d4be9a"
 local INTRO_LOGO_HEIGHT = #intro_logo
 local INTRO_LOGO_WIDTH = 55
 local autocmd_group = vim.api.nvim_create_augroup(PLUGIN_NAME, {})
